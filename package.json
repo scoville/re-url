@@ -1,0 +1,14 @@
+{
+  "name": "re-url",
+  "version": "0.1.0",
+  "description": "Url for ReScript",
+  "license": "MIT",
+  "scripts": {
+    "clean": "bsb -clean-world && rm -fr lib",
+    "build": "bsb -make-world",
+    "test": "yarn build && node test/Url_Test"
+  },
+  "devDependencies": {
+    "bs-platform": "^8.4.2"
+  }
+}
