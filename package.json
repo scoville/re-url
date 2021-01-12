@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "bs-platform": "^8.4.2"
+  },
+  "dependencies": {
+    "native-url": "^0.3.4"
   }
 }
