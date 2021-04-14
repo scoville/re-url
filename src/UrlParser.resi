@@ -22,10 +22,10 @@ let top: parser<'a, 'a>
 
 // Queries
 
-// <?>
-let q: unit
+let query: UrlParserQuery.parser<'a> => parser<'a => 'b, 'b>
 
-let query: unit
+// <?>
+let q: (parser<'a, 'b => 'c>, UrlParserQuery.parser<'b>) => parser<'a, 'c>
 
 // Fragments
 

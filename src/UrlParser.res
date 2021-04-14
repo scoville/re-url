@@ -84,12 +84,20 @@ let top = Parser(state => [state])
 
 // Queries
 
-// TODO: Implement
-// <?>
-let q = ()
+let query = (UrlParserQuery.Parser(queryParser)) => Parser(
+  ({visited, unvisited, params, frag, value}) => [
+    {
+      visited: visited,
+      unvisited: unvisited,
+      params: params,
+      frag: frag,
+      value: value(queryParser(params)),
+    },
+  ],
+)
 
-// TODO: Implement
-let query = ()
+// <?>
+let q = (parser, queryParser) => slash(parser, query(queryParser))
 
 // Fragments
 
