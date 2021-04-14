@@ -14,6 +14,8 @@ let s: string => parser<'a, 'a>
 
 let slash: (parser<'a, 'b>, parser<'b, 'c>) => parser<'a, 'c>
 
+let \"/": (parser<'a, 'b>, parser<'b, 'c>) => parser<'a, 'c>
+
 let map: (parser<'a, 'b>, 'a) => parser<'b => 'c, 'c>
 
 let oneOf: array<parser<'a, 'b>> => parser<'a, 'b>

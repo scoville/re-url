@@ -93,18 +93,23 @@ assert (
 )
 
 module Route = {
-  open UrlParser
+  open! UrlParser
 
   @deriving(accessors)
-  type t = Home | Blog(int) | Something(string, int) | NotFound
+  type t = Home | Blog(int) | Something(string, int) | About | NotFound
 
-  let topRoute = top->map(home)
+  let topRoute = top
+  let blogRoute = s("blog") / int()
+  let somethingRoute = s("something") / str() / s("else") / int()
+  let aboutRoute = s("about")
 
-  let blogRoute = s("blog")->slash(int())->map(blog)
-
-  let somethingRoute = s("something")->slash(str())->slash(s("else"))->slash(int())->map(something)
-
-  let fromString = oneOf([topRoute, blogRoute, somethingRoute])->parseString(~fallback=notFound)
+  let fromString =
+    oneOf([
+      topRoute->map(home),
+      blogRoute->map(blog),
+      somethingRoute->map(something),
+      aboutRoute->map(about),
+    ])->parseString(~fallback=notFound)
 }
 
 assert (Route.fromString("/blog/42") == NotFound)
@@ -113,5 +118,6 @@ assert (Route.fromString("https://example.com/blog/42") == Blog(42))
 assert (Route.fromString("https://example.com/blog/foo") == NotFound)
 assert (Route.fromString("https://example.com/something/foo/else/12") == Something("foo", 12))
 assert (Route.fromString("https://example.com/something/foo/else/bar") == NotFound)
+assert (Route.fromString("https://example.com/about") == About)
 
 Js.log("Tests passed")

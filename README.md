@@ -8,7 +8,7 @@ ReUrl is a port of the [elm-url](https://github.com/elm/url) library, a powerful
 
 // We can define our Route module
 module Route = {
-  open UrlParser
+  open UrlParser // Must be open! UrlParser if you use the `/` operator
 
   // It will contain an exhaustive list of possible routes, with arguments
   // Notice that we use `deriving(accessors)` for conveniency, but you don't have to
@@ -18,11 +18,10 @@ module Route = {
   // We can now define our 3 possible paths
   let topRoute = top->map(home)
 
-  let blogRoute = s("blog")->slash(int())->map(blog)
+  let blogRoute = (s("blog") / int())->map(blog)
 
   // Even complex routes are still easy to read:
-  // something / a string / else / an int
-  let somethingRoute = s("something")->slash(str())->slash(s("else"))->slash(int())->map(something)
+  let somethingRoute = (s("something") / str() / s("else") / (int())->map(something)
 
   // This function will take a string and try to decode/parse it using one of the provided parsers
   // If no paths match, then the fallback value will be returned
@@ -61,7 +60,7 @@ let somethingRoute = (s("something") </> str() </> s("else") </> int())->map(som
 
 ```rescript
 module Route = {
-  let blogRoute = s("blog")->slash(int())
+  let blogRoute = s("blog") / int()
   // Raises a `The type of this module contains type variables that cannot be generalized`
   // compile error, and later: `let blogRoute: Url.UrlParser.parser<int => '_weak1, '_weak1>`
 }

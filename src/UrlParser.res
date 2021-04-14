@@ -63,6 +63,8 @@ let slash = (Parser(parseBefore), Parser(parseAfter)) => Parser(
   state => state->parseBefore->flatMapArray(parseAfter),
 )
 
+let \"/" = slash
+
 let mapState = ({visited, unvisited, params, frag, value}, f) => {
   visited: visited,
   unvisited: unvisited,
