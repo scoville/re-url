@@ -101,8 +101,17 @@ let q = (parser, queryParser) => slash(parser, query(queryParser))
 
 // Fragments
 
-// TODO: Implement
-let fragment = ()
+let fragment = toFragment => Parser(
+  ({visited, unvisited, params, frag, value}) => [
+    {
+      visited: visited,
+      unvisited: unvisited,
+      params: params,
+      frag: frag,
+      value: value(toFragment(frag)),
+    },
+  ],
+)
 
 // Run Parsers
 

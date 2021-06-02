@@ -29,7 +29,7 @@ let q: (parser<'a, 'b => 'c>, UrlParserQuery.parser<'b>) => parser<'a, 'c>
 
 // Fragments
 
-let fragment: unit
+let fragment: (option<string> => 'b) => parser<'b => 'a, 'a>
 
 // Run Parsers
 

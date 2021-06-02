@@ -193,4 +193,23 @@ assert (
     MultiQuery({foo: "42", bar: 0})
 )
 
+module RouteWithFragment = {
+  open UrlParser
+
+  @deriving(accessors)
+  type t = Home | Blog(int, option<string>) | NotFound
+
+  let topRoute = top
+  let blogRoute = s("blog")->slash(int())->slash(fragment(x => x))
+
+  let fromString =
+    oneOf([topRoute->map(home), blogRoute->map(blog)])->parseString(~fallback=notFound)
+}
+
+assert (
+  RouteWithFragment.fromString("https://example.com/blog/42#foobar") == Blog(42, Some("foobar"))
+)
+assert (RouteWithFragment.fromString("https://example.com/blog/42#") == Blog(42, Some("")))
+assert (RouteWithFragment.fromString("https://example.com/blog/42") == Blog(42, None))
+
 Js.log("Tests passed")

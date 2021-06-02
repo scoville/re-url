@@ -38,10 +38,7 @@ let fromNativeUrl = ({NativeUrl.protocol: protocol, hostname, port, pathname, qu
     port: port->Js.Nullable.toOption->Option.flatMap(Int.fromString),
     path: pathname->Js.Nullable.toOption->Option.getWithDefault(""),
     query: query->Js.Nullable.toOption,
-    fragment: hash
-    ->Js.Nullable.toOption
-    ->Option.map(hash => hash->Js.String2.sliceToEnd(~from=1))
-    ->Option.flatMap(fragment => fragment == "" ? None : Some(fragment)),
+    fragment: hash->Js.Nullable.toOption->Option.map(hash => hash->Js.String2.sliceToEnd(~from=1)),
   }
 
   switch (protocol->Js.Nullable.toOption, hostname->Js.Nullable.toOption) {
