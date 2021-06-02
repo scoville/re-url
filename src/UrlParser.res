@@ -71,30 +71,49 @@ let mapState = ({visited, unvisited, params, frag, value}, f) => {
   value: f(value),
 }
 
-let map = (Parser(parseArg), subValue) => Parser(
-  ({visited, unvisited, params, frag, value}) =>
-    {visited: visited, unvisited: unvisited, params: params, frag: frag, value: subValue}
-    ->parseArg
-    ->Array.map(state => state->mapState(value)),
-)
-
 let oneOf = parsers => Parser(state => parsers->flatMapArray((Parser(parser)) => parser(state)))
 
 let top = Parser(state => [state])
 
 // Queries
 
-// TODO: Implement
-// <?>
-let q = ()
+let query = (UrlParserQuery.Parser(queryParser)) => Parser(
+  ({visited, unvisited, params, frag, value}) => [
+    {
+      visited: visited,
+      unvisited: unvisited,
+      params: params,
+      frag: frag,
+      value: value(queryParser(params)),
+    },
+  ],
+)
 
-// TODO: Implement
-let query = ()
+// <?>
+let q = (parser, queryParser) => slash(parser, query(queryParser))
 
 // Fragments
 
-// TODO: Implement
-let fragment = ()
+let fragment = toFragment => Parser(
+  ({visited, unvisited, params, frag, value}) => [
+    {
+      visited: visited,
+      unvisited: unvisited,
+      params: params,
+      frag: frag,
+      value: value(toFragment(frag)),
+    },
+  ],
+)
+
+// Utilities
+
+let map = (Parser(parseArg), subValue) => Parser(
+  ({visited, unvisited, params, frag, value}) =>
+    {visited: visited, unvisited: unvisited, params: params, frag: frag, value: subValue}
+    ->parseArg
+    ->Array.map(state => state->mapState(value)),
+)
 
 // Run Parsers
 

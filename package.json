@@ -4,12 +4,12 @@
   "description": "Url for ReScript",
   "license": "MIT",
   "scripts": {
-    "clean": "bsb -clean-world && rm -fr lib",
-    "build": "bsb -make-world",
+    "clean": "rescript clean && rm -fr lib",
+    "build": "rescript build",
     "test": "yarn build && node test/Url_Test"
   },
   "devDependencies": {
-    "bs-platform": "^8.4.2"
+    "rescript": "^9.1.3"
   },
   "dependencies": {
     "native-url": "^0.3.4"
