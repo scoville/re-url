@@ -14,8 +14,6 @@ let s: string => parser<'a, 'a>
 
 let slash: (parser<'a, 'b>, parser<'b, 'c>) => parser<'a, 'c>
 
-let map: (parser<'a, 'b>, 'a) => parser<'b => 'c, 'c>
-
 let oneOf: array<parser<'a, 'b>> => parser<'a, 'b>
 
 let top: parser<'a, 'a>
@@ -30,6 +28,10 @@ let q: (parser<'a, 'b => 'c>, UrlParserQuery.parser<'b>) => parser<'a, 'c>
 // Fragments
 
 let fragment: (option<string> => 'b) => parser<'b => 'a, 'a>
+
+// Utilities
+
+let map: (parser<'a, 'b>, 'a) => parser<'b => 'c, 'c>
 
 // Run Parsers
 

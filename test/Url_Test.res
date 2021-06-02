@@ -137,18 +137,17 @@ module RouteWithQueries = {
     | MultiQuery(multiQuery)
     | NotFound
 
-  let foo = Query.str("foo")->Query.map(Option.getWithDefault(_, ""))
-
-  let bar = Query.int("bar")->Query.map(Option.getWithDefault(_, 0))
-
-  let makeMultiQuery = (foo, bar) => {foo: foo, bar: bar}
+  let multiQuery' =
+    Query.from((foo, bar) => {foo: foo, bar: bar})
+    ->Query.search(Query.str("foo")->Query.withDefault(""))
+    ->Query.search(Query.int("bar")->Query.withDefault(0))
 
   let topRoute = top
   let blogRoute = s("blog")->slash(int())->q(Query.str("s"))
   let pickyRoute = s("picky")->q(Query.enum("value", [("x", X), ("y", Y)]))
   let alwaysMatchRoute =
     s("always-match")->q(Query.int("x")->Query.map(Option.getWithDefault(_, 0)))
-  let multiQueryRoute = s("multi-query")->q(bar->Query.apply(foo->Query.map(makeMultiQuery)))
+  let multiQueryRoute = s("multi-query")->q(multiQuery')
 
   let fromString =
     oneOf([

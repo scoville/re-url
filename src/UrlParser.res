@@ -71,13 +71,6 @@ let mapState = ({visited, unvisited, params, frag, value}, f) => {
   value: f(value),
 }
 
-let map = (Parser(parseArg), subValue) => Parser(
-  ({visited, unvisited, params, frag, value}) =>
-    {visited: visited, unvisited: unvisited, params: params, frag: frag, value: subValue}
-    ->parseArg
-    ->Array.map(state => state->mapState(value)),
-)
-
 let oneOf = parsers => Parser(state => parsers->flatMapArray((Parser(parser)) => parser(state)))
 
 let top = Parser(state => [state])
@@ -111,6 +104,15 @@ let fragment = toFragment => Parser(
       value: value(toFragment(frag)),
     },
   ],
+)
+
+// Utilities
+
+let map = (Parser(parseArg), subValue) => Parser(
+  ({visited, unvisited, params, frag, value}) =>
+    {visited: visited, unvisited: unvisited, params: params, frag: frag, value: subValue}
+    ->parseArg
+    ->Array.map(state => state->mapState(value)),
 )
 
 // Run Parsers
